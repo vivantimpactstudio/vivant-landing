@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VIVANT — Consultora de Impacto Social</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,700;1,900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --dark:   #004d53;
+  --teal:   #019a93;
+  --light:  #80c8bb;
+  --pale:   #d0ece7;
+  --bg:     #eef8f6;
+  --purple: #6d1e78;
+  --yellow: #efe504;
+  --white:  #ffffff;
+  --off:    #f6fbfa;
+  --text:   #1c3840;
+  --mid:    #3c6068;
+  --muted:  #6a9298;
+  --f:      'Red Hat Display', sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--f);color:var(--text);background:var(--white);overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+
+/* ─── NAV ─── */
+nav{position:fixed;top:0;left:0;right:0;z-index:9000;background:rgba(255,255,255,.97);backdrop-filter:blur(12px);border-bottom:1.5px solid var(--pale);height:70px;padding:0 6%;display:flex;align-items:center;justify-content:space-between;transition:box-shadow .3s;}
+nav.scrolled{box-shadow:0 4px 30px rgba(0,77,83,.08);}
+.logo-wrap{display:flex;flex-direction:column;gap:2px;text-decoration:none;}
+.logo-img{height:28px;width:auto;}
+.logo-sub{font-size:.55rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--dark);}
+.nav-links{display:flex;align-items:center;gap:1.8rem;list-style:none;}
+.nav-links a{font-size:.9rem;font-weight:500;color:var(--dark);text-decoration:none;transition:color .2s;}
+.nav-links a:hover{color:var(--teal);}
+.nav-cta{background:var(--dark)!important;color:var(--white)!important;padding:.5rem 1.3rem;border-radius:50px;font-weight:700!important;}
+.nav-cta:hover{background:var(--purple)!important;}
+.burger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px;}
+.burger span{display:block;width:22px;height:2px;background:var(--dark);border-radius:2px;}
+
+/* ─── BUTTONS ─── */
+.btn{display:inline-block;font-family:var(--f);font-weight:700;font-size:1rem;padding:.9rem 2.2rem;border-radius:50px;text-decoration:none;transition:transform .2s,box-shadow .2s,background .2s;cursor:pointer;border:none;}
+.btn-main{background:var(--light);color:var(--dark);}
+.btn-main:hover{background:var(--white);transform:translateY(-2px);box-shadow:0 8px 28px rgba(128,200,187,.35);}
+.btn-ghost{background:transparent;color:var(--white);border:1.5px solid rgba(128,200,187,.4);}
+.btn-ghost:hover{border-color:var(--light);background:rgba(128,200,187,.08);}
+.btn-dark{background:var(--light);color:var(--dark);font-family:var(--f);font-size:1rem;font-weight:700;padding:.95rem 2.2rem;border-radius:50px;width:100%;border:none;cursor:pointer;transition:transform .2s,background .2s;}
+.btn-dark:hover{background:var(--white);transform:translateY(-2px);}
+
+/* ─── SECTION ─── */
+.sec{padding:7rem 8%;}
+.eyebrow{display:inline-flex;align-items:center;gap:.6rem;font-size:.72rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--teal);margin-bottom:1.4rem;}
+.eyebrow::before{content:'';display:block;width:20px;height:2px;background:currentColor;flex-shrink:0;}
+h2{font-family:var(--f);font-weight:900;font-size:clamp(2rem,3.5vw,3rem);color:var(--dark);line-height:1.1;margin-bottom:1.6rem;letter-spacing:-.01em;}
+h2 em{font-style:italic;color:var(--teal);}
+.lede{font-size:1.1rem;font-weight:400;color:var(--mid);line-height:1.85;margin-bottom:1.4rem;}
+.body{font-size:.97rem;font-weight:400;color:var(--mid);line-height:1.85;margin-bottom:1.2rem;}
+.small{font-size:.88rem;color:var(--muted);line-height:1.75;}
+
+/* ─── HERO ─── */
+#hero{min-height:100vh;background:var(--dark);display:flex;align-items:center;padding:0 8%;padding-top:70px;position:relative;overflow:hidden;}
+#hero::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--yellow);}
+.hero-inner{position:relative;z-index:2;max-width:740px;}
+.hero-eyebrow{font-size:.75rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--light);margin-bottom:2rem;display:block;}
+.hero-h{font-family:var(--f);font-size:clamp(2.5rem,5vw,4.4rem);font-weight:900;color:var(--white);line-height:1.08;margin-bottom:1.6rem;letter-spacing:-.015em;}
+.hero-h em{font-style:italic;color:var(--light);}
+.hero-body{font-size:1.1rem;color:rgba(255,255,255,.68);line-height:1.88;max-width:580px;margin-bottom:3rem;}
+.hero-body strong{color:var(--light);font-weight:600;}
+.hero-btns{display:flex;gap:1.1rem;flex-wrap:wrap;}
+.hero-wave{position:absolute;bottom:0;left:0;right:0;line-height:0;pointer-events:none;}
+
+/* ─── STATS ─── */
+.stats{background:var(--light);display:grid;grid-template-columns:repeat(4,1fr);}
+.stat{padding:2.2rem 1.5rem;text-align:center;border-right:1px solid rgba(0,77,83,.12);}
+.stat:last-child{border-right:none;}
+.stat-n{display:block;font-size:2.6rem;font-weight:900;color:var(--dark);line-height:1;margin-bottom:.4rem;}
+.stat-l{font-size:.75rem;font-weight:600;color:var(--dark);opacity:.68;text-transform:uppercase;letter-spacing:.07em;}
+
+/* ─── PROBLEMA ─── */
+#problema{background:var(--off);}
+.prob-grid{display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:start;}
+.pull{margin-top:2rem;padding:1.6rem 2rem;border-left:4px solid var(--yellow);background:var(--bg);border-radius:0 12px 12px 0;font-size:1rem;font-style:italic;font-weight:500;color:var(--dark);line-height:1.7;}
+.cases{display:flex;flex-direction:column;gap:1.3rem;}
+.case{background:var(--white);border-radius:14px;padding:1.8rem 2rem;border-left:3px solid var(--light);box-shadow:0 2px 14px rgba(0,77,83,.05);}
+.case.cp{border-left-color:var(--purple);}
+.case.cd{border-left-color:var(--dark);}
+.case-label{font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);margin-bottom:.7rem;}
+.case.cp .case-label{color:var(--purple);}
+.case.cd .case-label{color:var(--dark);}
+.case-text{font-size:.95rem;color:var(--mid);line-height:1.78;}
+.close-band{margin-top:5rem;background:var(--dark);border-radius:20px;padding:3.5rem 4rem;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;}
+.close-h{font-size:1.7rem;font-weight:900;color:var(--white);line-height:1.3;}
+.close-h em{font-style:italic;color:var(--light);}
+.close-b{font-size:1rem;color:rgba(255,255,255,.65);line-height:1.85;}
+
+/* ─── ORIGEN ─── */
+#origen{background:var(--white);}
+.origen-grid{display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:start;}
+.origen-grid .rv:first-child{order:2;}
+.origen-grid .rv:last-child{order:1;}
+@media(max-width:1024px){
+.origen-grid .rv:first-child{order:2;}
+.origen-grid .rv:last-child{order:1;}
+}
+.img-ph{width:100%;aspect-ratio:4/3;background:var(--bg);border-radius:20px;border:2px dashed var(--pale);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.8rem;color:var(--muted);font-size:.85rem;font-weight:500;text-align:center;padding:2rem;}
+.img-ph svg{opacity:.35;}
+.blockquote{padding:1.5rem 2rem;border-left:3px solid var(--light);background:var(--bg);border-radius:0 12px 12px 0;font-size:.97rem;font-style:italic;color:var(--mid);line-height:1.75;margin-top:2rem;}
+
+/* ─── MÉTODO ─── */
+#metodo{background:var(--bg);}
+.metodo-intro{text-align:center;max-width:680px;margin:0 auto 4.5rem;}
+.metodo-intro .eyebrow{justify-content:center;}
+.metodo-intro .eyebrow::before{display:none;}
+.m-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.8rem;}
+.mc{background:var(--white);border-radius:20px;padding:2.8rem;border:1px solid var(--pale);position:relative;overflow:hidden;transition:transform .3s,box-shadow .3s;}
+.mc:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(0,77,83,.09);}
+.mc.dark{background:var(--dark);border-color:transparent;}
+.mc.purple{background:#f6eff8;border-color:rgba(109,30,120,.1);}
+.mc-n{position:absolute;top:1.5rem;right:2rem;font-size:5rem;font-weight:900;line-height:1;color:var(--pale);pointer-events:none;}
+.mc.dark .mc-n{color:rgba(255,255,255,.07);}
+.mc.purple .mc-n{color:rgba(109,30,120,.08);}
+.mc-name{font-size:1.9rem;font-weight:900;color:var(--dark);margin-bottom:.2rem;line-height:1.1;}
+.mc.dark .mc-name{color:var(--light);}
+.mc.purple .mc-name{color:var(--purple);}
+.mc-sub{font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);margin-bottom:1.3rem;}
+.mc.dark .mc-sub{color:rgba(255,255,255,.4);}
+.mc.purple .mc-sub{color:var(--purple);}
+.mc-body{font-size:.97rem;color:var(--mid);line-height:1.8;}
+.mc.dark .mc-body{color:rgba(255,255,255,.72);}
+/* wide card */
+.mc-wide{grid-column:1/-1;background:var(--white);border:1px solid var(--pale);border-radius:20px;padding:2.8rem;display:grid;grid-template-columns:1fr 1.6fr;gap:4rem;align-items:start;}
+.mc-wide .mc-name{font-size:1.6rem;}
+.tech-rows{display:flex;flex-direction:column;gap:.9rem;margin-top:1rem;}
+.tech-row{display:flex;gap:.9rem;align-items:flex-start;}
+.tech-dot{width:6px;height:6px;background:var(--teal);border-radius:50%;flex-shrink:0;margin-top:.6rem;}
+.tech-text{font-size:.95rem;color:var(--mid);line-height:1.72;}
+/* ecosystem */
+.ecosystem{margin-top:3rem;background:var(--dark);border-radius:16px;padding:2.5rem 3rem;display:grid;grid-template-columns:auto 1fr;gap:3rem;align-items:center;}
+.eco-label{font-size:.7rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:.5rem;}
+.eco-title{font-size:1.1rem;font-weight:800;color:var(--white);}
+.pills{display:flex;flex-wrap:wrap;gap:.55rem;}
+.pill{background:rgba(128,200,187,.14);border:1px solid rgba(128,200,187,.25);border-radius:50px;padding:.4rem 1rem;font-size:.78rem;color:var(--light);font-weight:600;}
+
+/* ─── SERVICIOS ─── */
+#servicios{background:var(--white);}
+.serv-intro{max-width:620px;margin-bottom:4rem;}
+.serv-cols{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;}
+.serv-col{background:var(--off);border-radius:20px;padding:2.5rem;border-top:4px solid var(--dark);}
+.serv-col.purple-top{border-top-color:var(--purple);}
+.serv-col-title{font-size:1.05rem;font-weight:800;color:var(--dark);margin-bottom:1.8rem;}
+.serv-col.purple-top .serv-col-title{color:var(--purple);}
+.serv-items{display:flex;flex-direction:column;gap:1.1rem;}
+.si{background:var(--white);border-radius:12px;padding:1.4rem 1.6rem;border-left:3px solid var(--light);}
+.si.sip{border-left-color:var(--purple);}
+.si-name{font-size:.93rem;font-weight:700;color:var(--dark);margin-bottom:.3rem;}
+.si.sip .si-name{color:var(--purple);}
+.si-desc{font-size:.83rem;color:var(--muted);line-height:1.62;}
+/* packages */
+.packages{margin-top:3.5rem;background:var(--dark);border-radius:20px;padding:3rem 3.5rem;display:grid;grid-template-columns:1fr 1.6fr;gap:4rem;align-items:start;}
+.pkg-h{font-size:1.3rem;font-weight:900;color:var(--white);margin-bottom:.5rem;}
+.pkg-note{font-size:.85rem;color:rgba(255,255,255,.4);font-style:italic;line-height:1.6;}
+.pkg-list{display:flex;flex-direction:column;gap:.9rem;}
+.pkg-row{display:flex;gap.9rem;align-items:flex-start;gap:.9rem;}
+.pkg-dot{width:8px;height:8px;background:var(--yellow);border-radius:50%;flex-shrink:0;margin-top:.45rem;}
+.pkg-text{font-size:.9rem;color:rgba(255,255,255,.8);line-height:1.62;}
+.pkg-text strong{color:var(--light);}
+
+/* ─── IMPACTO ─── */
+#impacto{background:var(--dark);}
+.imp-intro{text-align:center;margin-bottom:4.5rem;}
+.imp-intro .eyebrow{color:var(--light);justify-content:center;}
+.imp-intro .eyebrow::before{display:none;}
+.imp-intro h2{color:var(--white);}
+.imp-intro .lede{color:rgba(255,255,255,.55);}
+.imp-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;margin-bottom:4rem;}
+.ic{background:rgba(128,200,187,.1);border:1px solid rgba(128,200,187,.2);border-radius:18px;padding:2.2rem 1.5rem;text-align:center;}
+.ic-n{display:block;font-size:2.8rem;font-weight:900;color:var(--light);line-height:1;margin-bottom:.5rem;}
+.ic-l{font-size:.76rem;font-weight:600;color:rgba(255,255,255,.55);text-transform:uppercase;letter-spacing:.08em;}
+/* cohumanidad */
+.coh{background:rgba(128,200,187,.07);border:1px solid rgba(128,200,187,.18);border-radius:20px;padding:3rem 3.5rem;display:grid;grid-template-columns:1fr 1.8fr;gap:4rem;align-items:center;margin-bottom:4rem;}
+.coh-tag{font-size:.7rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--yellow);margin-bottom:.5rem;}
+.coh-name{font-size:1.9rem;font-weight:900;color:var(--white);margin-bottom:.2rem;line-height:1.1;}
+.coh-count{font-size:.88rem;color:rgba(255,255,255,.4);}
+.coh-context{font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:.8rem;}
+.coh-body{font-size:.97rem;color:rgba(255,255,255,.72);line-height:1.85;}
+/* partners */
+.partners{text-align:center;}
+.partners-lbl{font-size:.7rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.25);margin-bottom:2rem;}
+.partners-row{display:flex;justify-content:center;flex-wrap:wrap;gap:1rem 3rem;}
+.partner{font-size:.85rem;font-weight:600;color:rgba(255,255,255,.28);text-transform:uppercase;letter-spacing:.05em;transition:color .2s;cursor:default;}
+.partner:hover{color:rgba(255,255,255,.68);}
+
+/* ─── FAQ ─── */
+#faq{background:var(--bg);}
+.faq-intro{text-align:center;margin-bottom:4rem;}
+.faq-intro .eyebrow{justify-content:center;}
+.faq-intro .eyebrow::before{display:none;}
+.faq-list{max-width:820px;margin:0 auto;display:flex;flex-direction:column;gap:1rem;}
+.faq-item{background:var(--white);border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(0,77,83,.05);}
+.faq-q{width:100%;text-align:left;background:none;border:none;padding:1.7rem 2rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:1.5rem;font-family:var(--f);font-size:1rem;font-weight:700;color:var(--dark);transition:background .2s;}
+.faq-q:hover{background:var(--bg);}
+.faq-icon{font-size:1.4rem;color:var(--teal);flex-shrink:0;transition:transform .3s;font-weight:300;line-height:1;}
+.faq-item.open .faq-icon{transform:rotate(45deg);}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .35s ease,padding .3s;padding:0 2rem;font-size:.97rem;color:var(--mid);line-height:1.85;}
+.faq-item.open .faq-a{max-height:400px;padding:0 2rem 1.8rem;}
+
+/* ─── CONTACTO ─── */
+#contacto{background:var(--dark);}
+.ct-grid{display:grid;grid-template-columns:1fr 1.3fr;gap:6rem;align-items:start;}
+.ct-eyebrow{color:var(--light);}
+.ct-h{color:var(--white);}
+.ct-body{font-size:1rem;color:rgba(255,255,255,.65);line-height:1.85;margin:1.5rem 0 3rem;}
+.ct-links{display:flex;flex-direction:column;gap:1.3rem;}
+.ct-link{display:flex;align-items:center;gap:1rem;text-decoration:none;color:rgba(255,255,255,.75);font-size:.97rem;font-weight:500;transition:color .2s;}
+.ct-link:hover{color:var(--light);}
+.ct-icon{width:42px;height:42px;border-radius:10px;background:rgba(128,200,187,.12);border:1px solid rgba(128,200,187,.22);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.ct-icon svg{width:20px;height:20px;fill:var(--light);}
+/* form */
+.cform{background:rgba(255,255,255,.05);border:1px solid rgba(128,200,187,.18);border-radius:22px;padding:2.8rem;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.fg{display:flex;flex-direction:column;gap:.45rem;margin-bottom:1.1rem;}
+.fl{font-size:.73rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.38);}
+.fi,.fta{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:.82rem 1.1rem;color:var(--white);font-family:var(--f);font-size:.97rem;outline:none;transition:border-color .2s;width:100%;}
+.fi::placeholder,.fta::placeholder{color:rgba(255,255,255,.25);}
+.fi:focus,.fta:focus{border-color:var(--light);}
+.fta{resize:vertical;min-height:110px;}
+.fi.sel{color:rgba(255,255,255,.7);}
+.fi.sel option{background:var(--dark);color:var(--white);}
+#formOK{display:none;background:var(--light);color:var(--dark);font-weight:700;text-align:center;padding:1.1rem;border-radius:10px;margin-top:1rem;font-size:.97rem;}
+
+/* ─── FOOTER ─── */
+footer{background:#071415;padding:4rem 8% 0;}
+.ft-grid{display:grid;grid-template-columns:1.8fr 1fr 1fr;gap:5rem;padding-bottom:3.5rem;}
+.ft-logo{height:24px;filter:brightness(0) invert(1);margin-bottom:.4rem;}
+.ft-sub{font-size:.55rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.25);margin-bottom:1.2rem;}
+.ft-desc{font-size:.85rem;color:rgba(255,255,255,.38);line-height:1.68;max-width:260px;margin-bottom:2rem;}
+.ft-social{display:flex;gap:.7rem;}
+.soc{width:36px;height:36px;background:rgba(255,255,255,.07);border-radius:50%;display:flex;align-items:center;justify-content:center;text-decoration:none;transition:background .2s;}
+.soc:hover{background:var(--teal);}
+.soc svg{width:16px;height:16px;fill:rgba(255,255,255,.45);transition:fill .2s;}
+.soc:hover svg{fill:white;}
+.ft-col-h{font-size:.68rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.26);margin-bottom:1.2rem;}
+.ft-links{list-style:none;display:flex;flex-direction:column;gap:.65rem;}
+.ft-links a{font-size:.87rem;color:rgba(255,255,255,.46);text-decoration:none;transition:color .2s;font-weight:500;}
+.ft-links a:hover{color:var(--light);}
+.ft-btm{border-top:1px solid rgba(255,255,255,.06);padding:1.2rem 0 1.8rem;display:flex;justify-content:space-between;align-items:center;}
+.ft-copy{font-size:.76rem;color:rgba(255,255,255,.2);}
+.ft-slogan{font-size:.76rem;color:rgba(255,255,255,.16);font-style:italic;}
+
+/* ─── REVEAL ─── */
+.rv{opacity:0;transform:translateY(20px);transition:opacity .65s ease,transform .65s ease;}
+.rv.vis{opacity:1;transform:translateY(0);}
+
+/* ─── EDIT MODE ─── */
+body.edit [data-e]{outline:2px dashed rgba(1,154,147,.4);border-radius:3px;cursor:text;}
+body.edit [data-e]:hover{outline-color:var(--teal);}
+body.edit [data-e]:focus{outline:2px solid var(--teal);background:rgba(1,154,147,.03);}
+#ebar{position:fixed;bottom:2rem;right:2rem;z-index:9999;background:var(--dark);border-radius:50px;padding:.7rem 1.5rem;display:none;align-items:center;gap:1rem;box-shadow:0 8px 32px rgba(0,0,0,.25);}
+#ebar.visible{display:flex;}
+#ebar.visible{display:flex;}
+#ebar span{font-size:.78rem;color:rgba(255,255,255,.4);font-family:var(--f);}
+#etoggle{background:none;border:1px solid rgba(128,200,187,.3);color:var(--light);font-family:var(--f);font-size:.78rem;font-weight:700;padding:.3rem .9rem;border-radius:50px;cursor:pointer;transition:background .2s;}
+#etoggle:hover,#etoggle.on{background:var(--teal);color:white;border-color:var(--teal);}
+#esave{display:none;background:var(--light);color:var(--dark);border:none;font-family:var(--f);font-size:.78rem;font-weight:700;padding:.3rem .9rem;border-radius:50px;cursor:pointer;}
+#edownload{background:var(--yellow);color:var(--dark);border:none;font-family:var(--f);font-size:.78rem;font-weight:700;padding:.3rem .9rem;border-radius:50px;cursor:pointer;transition:background .2s;}
+#edownload:hover{background:white;}
+#esave:hover{background:white;}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:1024px){
+  .sec{padding:5rem 6%;}
+  #hero{padding:0 6%;padding-top:70px;}
+  .prob-grid,.close-band,.origen-grid,.serv-cols,.packages,.ct-grid,.coh,.ft-grid{grid-template-columns:1fr;gap:2.5rem;}
+  .m-grid{grid-template-columns:1fr;}
+  .mc-wide{grid-template-columns:1fr;gap:2rem;}
+  .ecosystem{grid-template-columns:1fr;gap:1.5rem;}
+  .imp-grid{grid-template-columns:repeat(2,1fr);}
+  .nav-links{display:none;}
+  .burger{display:flex;}
+  .nav-links.open{display:flex;flex-direction:column;position:absolute;top:70px;left:0;right:0;background:white;padding:1.8rem 6%;box-shadow:0 8px 30px rgba(0,0,0,.07);gap:1.4rem;}
+}
+@media(max-width:600px){
+  .sec{padding:4rem 5%;}
+  .stats{grid-template-columns:1fr 1fr;}
+  .stat{border-right:none;border-bottom:1px solid rgba(0,77,83,.1);}
+  .imp-grid{grid-template-columns:1fr 1fr;}
+  .form-row{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="mainNav">
+  <a href="#hero" class="logo-wrap">
+    <img src="images/logo.png" alt="VIVANT" class="logo-img">
+    <span class="logo-sub">Consultora de Impacto Social</span>
+  </a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#problema">El problema</a></li>
+    <li><a href="#metodo">El Método</a></li>
+    <li><a href="#servicios">Servicios</a></li>
+    <li><a href="#impacto">Impacto</a></li>
+    <li><a href="#faq">Preguntas</a></li>
+    <li><a href="#contacto" class="nav-cta">Contáctanos</a></li>
+  </ul>
+  <button class="burger" onclick="document.getElementById('navLinks').classList.toggle('open')">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section id="hero" style="position:relative;">
+  <div style="position:absolute;inset:0;background-image:url('images/hero-bg.jpg');background-size:cover;background-position:center;opacity:0.13;z-index:0;"></div>
+  <div class="hero-inner">
+    <span class="hero-eyebrow" data-e contenteditable="false">Consultora de Impacto Social</span>
+    <h1 class="hero-h" data-e contenteditable="false">
+      Liderazgo social con propósito,<br>
+      <em>transformación con estructura.</em>
+    </h1>
+    <p class="hero-body" data-e contenteditable="false">
+      VIVANT acompaña a organizaciones y empresas con propósito a <strong>ordenar sus procesos internos, diseñar proyectos financiables</strong> y multiplicar su incidencia sin agotar a su personal.
+    </p>
+    <div class="hero-btns">
+      <a href="#contacto" class="btn btn-main" data-e contenteditable="false">Contáctanos</a>
+      <a href="#metodo" class="btn btn-ghost" data-e contenteditable="false">Conoce el Método</a>
+    </div>
+  </div>
+  <svg class="hero-wave" viewBox="0 0 1440 56" fill="none">
+    <path d="M0 56 Q360 0 720 32 Q1080 64 1440 16 L1440 56Z" fill="#80c8bb" opacity=".13"/>
+    <path d="M0 56 Q480 24 960 44 Q1200 54 1440 32 L1440 56Z" fill="#80c8bb" opacity=".06"/>
+  </svg>
+</section>
+
+<!-- ═══ STATS ═══ -->
+<div class="stats">
+  <div class="stat"><span class="stat-n" data-e contenteditable="false">18</span><span class="stat-l" data-e contenteditable="false">Organizaciones fortalecidas</span></div>
+  <div class="stat"><span class="stat-n" data-e contenteditable="false">3.436</span><span class="stat-l" data-e contenteditable="false">Personas capacitadas</span></div>
+  <div class="stat"><span class="stat-n" data-e contenteditable="false">18</span><span class="stat-l" data-e contenteditable="false">Países de alcance</span></div>
+  <div class="stat"><span class="stat-n" data-e contenteditable="false">4.9/5</span><span class="stat-l" data-e contenteditable="false">Evaluación técnica promedio</span></div>
+</div>
+
+<!-- ═══ EL PROBLEMA ═══ -->
+<section id="problema" class="sec">
+  <div class="prob-grid">
+    <div class="rv">
+      <h2 data-e contenteditable="false">El sector social no falla por falta de intención, falla por falta de procesos.</h2>
+      <p class="lede" data-e contenteditable="false">El desgaste institucional se ha normalizado bajo la excusa del compromiso. Hoy es común observar organizaciones operando en un estado de emergencia permanente, donde la estrategia a largo plazo es devorada por el caos del día a día.</p>
+      <p class="body" data-e contenteditable="false">Sobrevivir a la urgencia impide pensar en la sostenibilidad. Hacer el bien no debería implicar operar desde el caos.</p>
+      <div class="pull" data-e contenteditable="false">"Las brechas estructurales tienen un costo operativo alto."</div>
+    </div>
+    <div class="rv">
+      <p class="small" style="font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);margin-bottom:1.3rem;">Situaciones que vemos en el sector</p>
+      <div class="cases">
+        <div class="case">
+          <div class="case-label">Sobrecarga operativa</div>
+          <p class="case-text" data-e contenteditable="false">Un coordinador de logística en terreno termina su jornada apagando incendios administrativos y llenando matrices en Excel, en lugar de asegurar la entrega oportuna de recursos a la comunidad.</p>
+        </div>
+        <div class="case cp">
+          <div class="case-label">Financiamiento perdido</div>
+          <p class="case-text" data-e contenteditable="false">Una ONG de base local con un trabajo territorial invaluable pierde fondos de cooperación internacional porque su teoría de cambio no logra traducirse en indicadores técnicos coherentes.</p>
+        </div>
+        <div class="case cd">
+          <div class="case-label">Datos sin propósito</div>
+          <p class="case-text" data-e contenteditable="false">Los sistemas de recolección de datos existen únicamente para cumplir con el reporte al donante, desconectando la información de la verdadera toma de decisiones internas.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="close-band rv">
+    <div class="close-h" data-e contenteditable="false">Hacer el bien no debería implicar operar desde el <em>caos.</em></div>
+    <p class="close-b" data-e contenteditable="false">VIVANT nace como respuesta a esta realidad. Para construir procesos vivos que quedan instalados en la organización y sostienen el impacto en el tiempo — sin diagnósticos que nadie lee.</p>
+  </div>
+</section>
+
+<!-- ═══ ORIGEN ═══ -->
+<section id="origen" class="sec" style="background:var(--white);">
+  <div class="origen-grid">
+    <div class="rv">
+      <h2 data-e contenteditable="false">VIVANT nace de una incomodidad.</h2>
+      <p class="lede" data-e contenteditable="false">De años trabajando en el sector social, acompañando organizaciones, diseñando proyectos, estructurando sistemas de monitoreo y ayudando a movilizar recursos… pero también viendo, una y otra vez, los mismos patrones que limitan el impacto.</p>
+
+      <div style="display:flex;flex-direction:column;gap:.7rem;margin:1.5rem 0 1.5rem;padding-left:1.4rem;border-left:3px solid var(--light);">
+        <p class="body" data-e contenteditable="false" style="margin:0;">Organizaciones con propósito, pero sin estructura.</p>
+        <p class="body" data-e contenteditable="false" style="margin:0;">Equipos comprometidos, pero agotados.</p>
+        <p class="body" data-e contenteditable="false" style="margin:0;">Proyectos valiosos, pero difíciles de sostener en el tiempo.</p>
+      </div>
+
+      <p class="body" data-e contenteditable="false">Durante mucho tiempo, <strong>Keicy Cabrera, Econ. y Máster en Cooperación Internacional</strong> acompañó estos procesos desde la consultoría individual en América Latina, Europa y África, ayudando a ordenar, clarificar y accionar. Y sí, los resultados llegaban.</p>
+      <p class="body" data-e contenteditable="false">Pero también quedó claro algo importante: el impacto no puede depender de una sola persona.</p>
+      <p class="body" style="font-weight:700;color:var(--dark);" data-e contenteditable="false">Ahí empezó el cambio.</p>
+      <p class="body" data-e contenteditable="false">VIVANT nace como la evolución natural de ese camino, como una respuesta a la necesidad de ir más allá de la asesoría puntual, para construir procesos, sistemas y estructuras que sostengan el impacto en el tiempo.</p>
+
+      <div style="margin:2rem 0;padding:1.8rem 2rem;background:var(--bg);border-radius:12px;">
+        <p class="body" style="margin:0 0 .5rem;color:var(--dark);font-weight:500;" data-e contenteditable="false">Porque hacer el bien no es suficiente.</p>
+        <p class="body" style="margin:0 0 .5rem;color:var(--dark);font-weight:500;" data-e contenteditable="false">Hay que saber cómo sostenerlo, medirlo y escalarlo.</p>
+        <p class="body" style="margin:0 0 .5rem;color:var(--mid);" data-e contenteditable="false">Y eso requiere algo más que intención:</p>
+        <p class="body" style="margin:0;font-size:1.15rem;font-weight:900;color:var(--dark);" data-e contenteditable="false">requiere estructura.</p>
+      </div>
+
+
+    </div>
+    <div class="rv" style="display:flex;flex-direction:column;gap:2rem;">
+      <img src="images/keicy-portrait.jpg" alt="Keicy Cabrera" style="width:100%;border-radius:20px;display:block;object-fit:cover;object-position:top;">
+      <div class="blockquote" data-e contenteditable="false">"VIVANT no entrega diagnósticos aislados ni recomendaciones genéricas. Opera como una consultora integral que se integra directamente a la dinámica de la institución para construir procesos vivos que queden instalados."</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ VIVANT ESTRUCTURA ═══ -->
+<section id="vivant-estructura" class="sec" style="background:var(--dark);">
+  <div style="max-width:820px;margin:0 auto;">
+    <span class="eyebrow" style="color:var(--light);">VIVANT: estructuras vivas para sostener el impacto</span>
+    <h2 style="color:var(--white);margin-bottom:1.5rem;" data-e contenteditable="false">Consultora integral de impacto social</h2>
+    <p class="lede" style="color:rgba(255,255,255,.72);margin-bottom:1.2rem;" data-e contenteditable="false">VIVANT no entrega diagnósticos aislados ni recomendaciones genéricas. Opera como una consultora integral respaldada por un equipo técnico especializado en monitoreo, evaluación, finanzas y operaciones que se integra directamente a la dinámica de la institución.</p>
+    <p class="body" style="color:rgba(255,255,255,.65);margin-bottom:3rem;" data-e contenteditable="false">El objetivo es construir procesos vivos que queden instalados en la organización. VIVANT traduce el caos organizativo en una hoja de ruta clara, combinando el rigor de los estándares humanitarios con metodologías de trabajo que protegen el bienestar del personal.</p>
+
+    <p style="font-size:.8rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:1.5rem;" data-e contenteditable="false">Nuestros valores los llevamos en el día a día de nuestro trabajo</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;">
+      <div style="background:rgba(128,200,187,.1);border:1px solid rgba(128,200,187,.2);border-radius:14px;padding:1.5rem 1.8rem;border-left:3px solid var(--light);">
+        <p style="font-size:.95rem;font-weight:700;color:var(--light);margin-bottom:.4rem;">Humanidad</p>
+        <p class="body" style="color:rgba(255,255,255,.65);margin:0;" data-e contenteditable="false">El impacto no puede depender de que el equipo se agote.</p>
+      </div>
+      <div style="background:rgba(109,30,120,.2);border:1px solid rgba(109,30,120,.3);border-radius:14px;padding:1.5rem 1.8rem;border-left:3px solid var(--purple);">
+        <p style="font-size:.95rem;font-weight:700;color:#c084d0;margin-bottom:.4rem;">Estrategia</p>
+        <p class="body" style="color:rgba(255,255,255,.65);margin:0;" data-e contenteditable="false">Sustituimos la intuición por evidencia real.</p>
+      </div>
+      <div style="background:rgba(239,229,4,.08);border:1px solid rgba(239,229,4,.18);border-radius:14px;padding:1.5rem 1.8rem;border-left:3px solid var(--yellow);">
+        <p style="font-size:.95rem;font-weight:700;color:var(--yellow);margin-bottom:.4rem;">Tecnología ética</p>
+        <p class="body" style="color:rgba(255,255,255,.65);margin:0;" data-e contenteditable="false">Herramientas que potencian sin reemplazar el juicio humano.</p>
+      </div>
+      <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:1.5rem 1.8rem;border-left:3px solid rgba(255,255,255,.3);">
+        <p style="font-size:.95rem;font-weight:700;color:white;margin-bottom:.4rem;">Rigor técnico</p>
+        <p class="body" style="color:rgba(255,255,255,.65);margin:0;" data-e contenteditable="false">Metodologías globales aplicadas al contexto de cada organización.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ MÉTODO ═══ -->
+<section id="metodo" class="sec">
+  <div class="metodo-intro rv">
+    <span class="eyebrow">Metodología VIVANT</span>
+    <h2 data-e contenteditable="false">Un ecosistema metodológico con propósito</h2>
+    <p class="lede" data-e contenteditable="false">Los consultores de VIVANT implementan un marco metodológico propio, adaptando cada intervención a la madurez operativa y financiera de la organización.</p>
+  </div>
+  <div class="m-grid">
+    <div class="mc rv">
+      <div class="mc-n">1</div>
+      <div class="mc-name" data-e contenteditable="false">CORA</div>
+      <div class="mc-sub">Claridad, Orden, Ruta, Acción</div>
+      <p class="mc-body" data-e contenteditable="false">El núcleo de la intervención estratégica. Consiste en el diagnóstico inicial de las necesidades de la organización, el mapeo de una ruta de acción para abordar cada brecha, organizar procesos internos para la ejecución y accionar para multiplicar el impacto.</p>
+    </div>
+    <div class="mc purple rv">
+      <div class="mc-n">2</div>
+      <div class="mc-name" data-e contenteditable="false">Puentes de Valor</div>
+      <div class="mc-sub">Arquitectura relacional sólida</div>
+      <p class="mc-body" data-e contenteditable="false">Transforma la cacería de donantes en una arquitectura relacional sólida, diseñamos propuestas de valor coherentes para diversificar ingresos y erradicar la dependencia financiera.</p>
+    </div>
+    <div class="mc rv">
+      <div class="mc-n">3</div>
+      <div class="mc-name" data-e contenteditable="false">FormAcción</div>
+      <div class="mc-sub">Capacidad instalada desde la primera sesión</div>
+      <p class="mc-body" data-e contenteditable="false">Formaciones diseñadas para que el staff adquiera capacidad instalada en gestión por resultados desde la primera sesión de trabajo.</p>
+    </div>
+    <div class="mc dark rv">
+      <div class="mc-n">4</div>
+      <div class="mc-name" data-e contenteditable="false">PAZ</div>
+      <div class="mc-sub">Procesos AutomatiZados con Sentido</div>
+      <p class="mc-body" data-e contenteditable="false">Diagnostica cuellos de botella y diseña flujos operativos más limpios para liberar al equipo de la carga administrativa repetitiva.</p>
+    </div>
+    <div class="mc-wide rv">
+      <div>
+        <div class="mc-name" style="font-size:1.6rem;color:var(--dark);" data-e contenteditable="false">Brújula</div>
+        <div class="mc-sub" style="color:var(--teal);">Mentoría y escucha profunda</div>
+        <p class="mc-body" data-e contenteditable="false">Facilita espacios de mentoría y escucha profunda para clarificar el diferencial de cada organización e identificar en dónde están las necesidades humanas de las mismas.</p>
+      </div>
+      <div>
+        <div class="mc-sub" style="color:var(--teal);margin-bottom:1rem;">Tecnología ética: eficiencia sin perder el alma</div>
+        <p class="body" style="margin-bottom:1.2rem;" data-e contenteditable="false">La inteligencia artificial no es magia ni un fin en sí mismo. En VIVANT, la tecnología se emplea estrictamente como un medio para la eficiencia operativa.</p>
+        <div class="tech-rows">
+          <div class="tech-row"><div class="tech-dot"></div><div class="tech-text" data-e contenteditable="false">Diseña protocolos éticos de automatización que los equipos pueden sostener en el tiempo.</div></div>
+          <div class="tech-row"><div class="tech-dot"></div><div class="tech-text" data-e contenteditable="false">Sistematiza el análisis de datos cualitativos y estructura dashboards operativos.</div></div>
+          <div class="tech-row"><div class="tech-dot"></div><div class="tech-text" data-e contenteditable="false">La premisa: lograr que las máquinas asuman la carga de los formatos para que los humanos regresen a la estrategia y a las comunidades.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="ecosystem rv">
+    <div>
+      <div class="eco-label">Cómo se integran</div>
+      <div class="eco-title" data-e contenteditable="false">Un ecosistema, no servicios sueltos</div>
+    </div>
+    <div class="pills">
+      <span class="pill">CORA construye la estrategia</span>
+      <span class="pill">Puentes asegura financiamiento</span>
+      <span class="pill">FormAcción instala capacidad</span>
+      <span class="pill">PAZ ordena la operación</span>
+      <span class="pill">Brújula fortalece el liderazgo</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SERVICIOS ═══ -->
+<section id="servicios" class="sec" style="background:var(--white);">
+  <div class="serv-intro rv">
+    <span class="eyebrow">Líneas de trabajo y entregables</span>
+    <h2 data-e contenteditable="false">Dos grandes áreas, un solo objetivo</h2>
+    <p class="lede" data-e contenteditable="false">VIVANT estructura sus intervenciones a través de dos grandes áreas que pueden funcionar de forma independiente o integrarse en un proceso profundo de fortalecimiento institucional. El objetivo es inyectar orden organizativo de manera progresiva y escalable.</p>
+  </div>
+  <div class="serv-cols">
+    <div class="serv-col rv">
+      <div class="serv-col-title">Consultoría estratégica de impacto</div>
+      <div class="serv-items">
+        <div class="si"><div class="si-name">Sistemas MERA / MEAL completos</div><div class="si-desc">Marcos lógicos, Teoría de Cambio, indicadores SMART, dashboards y protocolos de retroalimentación instalados.</div></div>
+        <div class="si"><div class="si-name">Análisis de ejecución y aprendizaje</div><div class="si-desc">Identificación de cuellos de botella, evaluaciones internas y sistematización de aprendizajes.</div></div>
+        <div class="si"><div class="si-name">Planificación estratégica institucional</div><div class="si-desc">Hojas de ruta claras con objetivos a 1–3 años, alineación entre misión y ejecución.</div></div>
+        <div class="si"><div class="si-name">Diseño de proyectos financiables</div><div class="si-desc">Propuestas técnicas, estructuración presupuestaria y narrativa de impacto para cooperación internacional.</div></div>
+        <div class="si"><div class="si-name">Recaudación de fondos y sostenibilidad</div><div class="si-desc">Estrategias enfocadas en la sostenibilidad, no en la dependencia financiera.</div></div>
+        <div class="si"><div class="si-name">Integración ética de IA y tecnología</div><div class="si-desc">Automatización de procesos documentales, dashboards operativos e informes optimizados.</div></div>
+      </div>
+    </div>
+    <div class="serv-col purple-top rv">
+      <div class="serv-col-title">Formación y desarrollo de capacidades</div>
+      <div class="serv-items">
+        <div class="si sip"><div class="si-name">Diseño y ejecución operativa</div><div class="si-desc">Formulación estratégica de proyectos, acción humanitaria y metodologías ágiles (SCRUM) para ONG.</div></div>
+        <div class="si sip"><div class="si-name">Impacto y financiamiento</div><div class="si-desc">Sistemas MERA vinculados directamente a estrategias técnicas de recaudación de fondos.</div></div>
+        <div class="si sip"><div class="si-name">Liderazgo social</div><div class="si-desc">Planificación operativa, gestión del tiempo y conducción de reuniones efectivas para directivos.</div></div>
+        <div class="si sip"><div class="si-name">Ecosistema digital</div><div class="si-desc">Integración práctica de IA, Excel, Power BI y Canva para visualización de datos y reportes a donantes.</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="packages rv">
+    <div>
+      <div class="pkg-h">Servicios empaquetables</div>
+      <p class="pkg-note">Los presupuestos se estructuran a medida tras evaluar la profundidad técnica requerida por cada organización.</p>
+    </div>
+    <div class="pkg-list">
+      <div class="pkg-row"><div class="pkg-dot"></div><div class="pkg-text"><strong>Diagnóstico institucional:</strong> evaluación profunda de los procesos programáticos a lo largo de cuatro semanas.</div></div>
+      <div class="pkg-row"><div class="pkg-dot"></div><div class="pkg-text"><strong>Diseño completo de sistema MERA:</strong> hojas de ruta, matrices de indicadores y protocolos de retroalimentación instalados.</div></div>
+      <div class="pkg-row"><div class="pkg-dot"></div><div class="pkg-text"><strong>Programas de fortalecimiento:</strong> intervenciones tácticas de seis meses o planes de acompañamiento anual.</div></div>
+      <div class="pkg-row"><div class="pkg-dot"></div><div class="pkg-text"><strong>Bootcamps in-company:</strong> entrenamiento intensivo para certificar a los equipos en planificación estratégica y diseño de proyectos.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ IMPACTO ═══ -->
+<section id="impacto" class="sec">
+  <div class="imp-intro rv">
+    <span class="eyebrow">Evidencia y prueba social</span>
+    <h2 class="imp-intro" data-e contenteditable="false" style="color:var(--white);">Resultados tangibles en el ecosistema social</h2>
+    <p class="lede" data-e contenteditable="false" style="color:rgba(255,255,255,.55);">El enfoque estructurado de VIVANT genera resultados demostrables.</p>
+  </div>
+  <div class="imp-grid">
+    <div class="ic rv"><span class="ic-n" data-e contenteditable="false">18</span><span class="ic-l">Organizaciones apoyadas en procesos críticos de fortalecimiento institucional</span></div>
+    <div class="ic rv"><span class="ic-n" data-e contenteditable="false">3.436</span><span class="ic-l">Personas capacitadas a lo largo de 18 países</span></div>
+    <div class="ic rv"><span class="ic-n" data-e contenteditable="false">18</span><span class="ic-l">Países de alcance</span></div>
+    <div class="ic rv"><span class="ic-n" data-e contenteditable="false">4.9/5</span><span class="ic-l">Evaluación en utilidad técnica, calidad y facilitación</span></div>
+  </div>
+  <div class="coh rv">
+    <div style="display:flex;flex-direction:column;align-items:flex-start;gap:1rem;">
+      <div class="coh-tag">Patrocinadores oficiales</div>
+      <img src="images/cohumanidad.png" alt="Co-Humanidad" style="height:80px;width:auto;">
+      <div class="coh-count" data-e contenteditable="false">+1.700 profesionales en Iberoamérica</div>
+    </div>
+    <div>
+      <p class="coh-context">¿Por qué apoyamos esta iniciativa?</p>
+      <p class="coh-body" data-e contenteditable="false">Creemos en la creación de comunidades que abordan la individualidad de los profesionales del sector social. Co-Humanidad es una comunidad viva que conecta a más de 1.700 profesionales del sector en Iberoamérica — un espacio diseñado para conectar, fortalecer y elevar el bienestar de quienes hacen posible el cambio social. El sentido de comunidad no es un accesorio: es el motor que sostiene el impacto a largo plazo.</p>
+    </div>
+  </div>
+
+</section>
+
+<!-- ═══ FAQ ═══ -->
+<section id="faq" class="sec">
+  <div class="faq-intro rv">
+    <span class="eyebrow">Preguntas frecuentes</span>
+    <h2 data-e contenteditable="false">Lo que suelen preguntarnos</h2>
+  </div>
+  <div class="faq-list rv">
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span data-e contenteditable="false">¿El equipo de VIVANT trabaja de forma presencial o remota?</span>
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a" data-e contenteditable="false">La firma tiene su base de operaciones en Venezuela y trabaja bajo un modelo de alcance internacional. Lidera consultorías de manera virtual en toda Iberoamérica, pero cuenta con plena capacidad de movilización a otros países para ejecutar formaciones intensivas o procesos críticos en terreno. Al solicitar un servicio, la organización recibe una propuesta técnica y financiera que detalla la inversión exacta para una ejecución 100% presencial, así como la alternativa en formato híbrido.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span data-e contenteditable="false">¿Las metodologías aplican para ONG de base local pequeñas?</span>
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a" data-e contenteditable="false">La estructura organizativa no es un lujo exclusivo de las grandes agencias internacionales. VIVANT adapta la escala de sus sistemas a la realidad de las bases locales. Formalizar procesos a tiempo es precisamente lo que permite a las organizaciones pequeñas absorber nuevos fondos sin colapsar.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span data-e contenteditable="false">¿Cómo se garantiza que los procesos se mantengan al terminar la consultoría?</span>
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a" data-e contenteditable="false">El principio rector de VIVANT es dejar capacidad instalada, no crear dependencia. A través de la metodología FormAcción, el equipo consultor entrena a los responsables de cada área para que dominen las herramientas operativas y tecnológicas antes del cierre del proyecto. El impacto duradero requiere bases sólidas.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CONTACTO ═══ -->
+<section id="contacto" class="sec">
+  <div class="ct-grid">
+    <div class="rv">
+      <span class="eyebrow ct-eyebrow">Hablemos</span>
+      <h2 class="ct-h" data-e contenteditable="false">Es el momento de dejar de gestionar el caos y comenzar a liderar desde la estrategia.</h2>
+      <p class="ct-body" data-e contenteditable="false">Escríbenos lo que requieres para que creemos la solución junt@s.</p>
+      <div class="ct-links">
+        <a href="mailto:hola@vivantimpactstudio.com" class="ct-link">
+          <div class="ct-icon">
+            <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6" style="fill:none;stroke:#80c8bb;stroke-width:1.5"/></svg>
+          </div>
+          <span>hola@vivantimpactstudio.com</span>
+        </a>
+        <a href="https://instagram.com/vivantimpactstudio" target="_blank" class="ct-link">
+          <div class="ct-icon">
+            <svg viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" fill="#80c8bb" opacity=".9"/><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4" stroke="#004d53" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1" fill="#004d53"/></svg>
+          </div>
+          <span>Instagram · vivantimpactstudio</span>
+        </a>
+        <a href="https://www.linkedin.com/company/vivantimpactstudio" target="_blank" class="ct-link">
+          <div class="ct-icon">
+            <svg viewBox="0 0 24 24" fill="#80c8bb"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4V9h4v2a6 6 0 0 1 4-3zM2 9h4v12H2zM4 6a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"/></svg>
+          </div>
+          <span>LinkedIn · Vivant Impact Studio</span>
+        </a>
+      </div>
+    </div>
+    <div class="rv">
+      <div class="cform">
+        <form id="contactForm" action="https://api.web3forms.com/submit" method="POST">
+          <input type="hidden" name="access_key" value="d162f5f4-5ec7-4d7c-bd39-57b8a1cf70e6">
+          <input type="hidden" name="subject" value="Nuevo contacto desde VIVANT">
+          <input type="hidden" name="redirect" value="false">
+          <input type="checkbox" name="botcheck" style="display:none;">
+
+          <div class="form-row">
+            <div class="fg"><label class="fl">Nombre</label><input type="text" name="nombre" class="fi" placeholder="Tu nombre completo" required></div>
+            <div class="fg"><label class="fl">Organización</label><input type="text" name="organizacion" class="fi" placeholder="Nombre de tu organización"></div>
+          </div>
+          <div class="fg"><label class="fl">Correo electrónico</label><input type="email" name="email" class="fi" placeholder="tu@correo.com" required></div>
+          <div class="fg">
+            <label class="fl">¿Qué necesitas?</label>
+            <select name="servicio" class="fi sel">
+              <option value="">Selecciona una opción</option>
+              <option>Consultoría estratégica de impacto</option>
+              <option>Formación y desarrollo de capacidades</option>
+              <option>Diagnóstico institucional</option>
+              <option>No estoy seguro/a, quiero conversar</option>
+            </select>
+          </div>
+          <div class="fg"><label class="fl">¿En qué te podemos apoyar?</label><textarea name="mensaje" class="fta" placeholder="Cuéntanos brevemente tu situación y qué esperas lograr."></textarea></div>
+          <button type="submit" class="btn-dark" id="fsub">Contáctanos</button>
+          <div id="formOK">¡Gracias! Nos pondremos en contacto muy pronto.</div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="ft-grid">
+    <div>
+      <img src="images/logo.png" alt="VIVANT" class="ft-logo">
+      <div class="ft-sub">Consultora de Impacto Social</div>
+      <p class="ft-desc">Donde la intención social se convierte en estructura, sin sacrificar lo humano.</p>
+      <div class="ft-social">
+        <a href="https://instagram.com/vivantimpactstudio" target="_blank" class="soc" title="Instagram">
+          <svg viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" fill="rgba(255,255,255,.12)"/><circle cx="12" cy="12" r="4" stroke="rgba(255,255,255,.45)" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1" fill="rgba(255,255,255,.45)"/></svg>
+        </a>
+        <a href="https://www.linkedin.com/company/vivantimpactstudio" target="_blank" class="soc" title="LinkedIn">
+          <svg viewBox="0 0 24 24" fill="rgba(255,255,255,.45)"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4V9h4v2a6 6 0 0 1 4-3zM2 9h4v12H2zM4 6a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"/></svg>
+        </a>
+        <a href="mailto:hola@vivantimpactstudio.com" class="soc" title="Email">
+          <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" fill="rgba(255,255,255,.12)"/><polyline points="22,6 12,13 2,6" style="fill:none;stroke:rgba(255,255,255,.45);stroke-width:1.5"/></svg>
+        </a>
+      </div>
+    </div>
+    <div>
+      <div class="ft-col-h">Navegación</div>
+      <ul class="ft-links">
+        <li><a href="#problema">El problema</a></li>
+        <li><a href="#origen">Nuestra historia</a></li>
+        <li><a href="#metodo">El Método</a></li>
+        <li><a href="#servicios">Servicios</a></li>
+        <li><a href="#impacto">Impacto</a></li>
+        <li><a href="#faq">Preguntas</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="ft-col-h">Metodologías</div>
+      <ul class="ft-links">
+        <li><a href="#metodo">CORA</a></li>
+        <li><a href="#metodo">Puentes de Valor</a></li>
+        <li><a href="#metodo">FormAcción</a></li>
+        <li><a href="#metodo">PAZ</a></li>
+        <li><a href="#metodo">Brújula</a></li>
+        <li><a href="#servicios">MERA / MEAL</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="ft-btm">
+    <span class="ft-copy">© 2026 VIVANT — Consultora de Impacto Social</span>
+    <span class="ft-slogan">El mejor impacto, siempre es a futuro.</span>
+  </div>
+</footer>
+
+<!-- ═══ EDIT BAR ═══ -->
+<div id="ebar">
+  <span>Modo edición</span>
+  <button id="etoggle" onclick="toggleEdit()">Activar</button>
+  <button id="esave" onclick="saveEdits()" style="display:none;">Copiar texto</button>
+  <button id="edownload" onclick="downloadHTML()">Guardar como...</button>
+</div>
+
+<script>
+/* Edit bar: hidden by default, show with Ctrl+Shift+E */
+document.addEventListener('keydown',e=>{
+  if(e.ctrlKey&&e.shiftKey&&e.key==='E'){
+    document.getElementById('ebar').classList.toggle('visible');
+  }
+});
+
+/* Reveal */
+const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis');});},{threshold:.07,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.rv').forEach((el,i)=>{el.style.transitionDelay=(i%4*.09)+'s';obs.observe(el);});
+
+/* Nav */
+window.addEventListener('scroll',()=>{document.getElementById('mainNav').classList.toggle('scrolled',scrollY>40);});
+
+/* FAQ */
+function toggleFaq(btn){
+  const item=btn.closest('.faq-item'),open=item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));
+  if(!open)item.classList.add('open');
+}
+
+/* Form — Web3Forms */
+document.getElementById('contactForm').addEventListener('submit', async function(e){
+  e.preventDefault();
+  const btn = document.getElementById('fsub');
+  const ok  = document.getElementById('formOK');
+  btn.disabled = true;
+  btn.textContent = 'Enviando...';
+  btn.style.opacity = '.7';
+
+  try {
+    const data = new FormData(this);
+    const res  = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      body: data
+    });
+    const json = await res.json();
+
+    if(json.success){
+      ok.textContent = '¡Gracias! Nos pondremos en contacto muy pronto.';
+      ok.style.background = 'var(--light)';
+      ok.style.color = 'var(--dark)';
+      ok.style.display = 'block';
+      this.reset();
+    } else {
+      ok.textContent = 'Hubo un error. Por favor escríbenos a hola@vivantimpactstudio.com';
+      ok.style.background = '#ff6b6b';
+      ok.style.color = 'white';
+      ok.style.display = 'block';
+    }
+  } catch(err) {
+    // Fallback si hay problema de red o CORS local
+    ok.textContent = 'Para probar el formulario el sitio debe estar publicado. ¡Pronto estará en línea!';
+    ok.style.background = 'rgba(128,200,187,.2)';
+    ok.style.color = 'var(--light)';
+    ok.style.display = 'block';
+  }
+
+  btn.disabled = false;
+  btn.textContent = 'Contáctanos';
+  btn.style.opacity = '1';
+});
+
+/* Edit mode */
+let editing=false;
+function toggleEdit(){
+  editing=!editing;
+  const t=document.getElementById('etoggle'),s=document.getElementById('esave');
+  document.querySelectorAll('[data-e]').forEach(el=>{
+    el.contentEditable=editing?'true':'false';
+    if(editing)el.setAttribute('tabindex','0');
+  });
+  document.body.classList.toggle('edit',editing);
+  t.textContent=editing?'Desactivar':'Activar';
+  t.classList.toggle('on',editing);
+  s.style.display=editing?'block':'none';
+}
+function saveEdits(){
+  const out=[];
+  document.querySelectorAll('[data-e]').forEach((el,i)=>out.push({i,text:el.innerText.trim()}));
+  navigator.clipboard.writeText(JSON.stringify(out,null,2)).then(()=>{
+    const s=document.getElementById('esave');
+    s.textContent='Copiado!';
+    setTimeout(()=>{s.textContent='Copiar texto';},2000);
+  });
+}
+
+function downloadHTML(){
+  // Turn off edit mode visually before saving
+  document.body.classList.remove('edit');
+  document.querySelectorAll('[data-e]').forEach(el=>{
+    el.contentEditable='false';
+    el.removeAttribute('tabindex');
+  });
+  document.getElementById('ebar').classList.remove('visible');
+  document.getElementById('etoggle').textContent='Activar';
+  document.getElementById('etoggle').classList.remove('on');
+  document.getElementById('esave').style.display='none';
+  editing=false;
+
+  // Get the full current HTML with edits applied
+  const doctype='<!DOCTYPE html>\n';
+  const fullHTML = doctype + document.documentElement.outerHTML;
+
+  // Download
+  const blob = new Blob([fullHTML], {type:'text/html;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'VIVANT-landing.html';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+</script>
+</body>
+</html>
